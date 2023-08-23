@@ -13,7 +13,6 @@ _zsh_rbenv_install() {
 }
 
 _zsh_rbenv_load() {
-    eval "$(rbenv init - --path)"
     eval "$(rbenv init - --no-rehash zsh)"
 }
 
