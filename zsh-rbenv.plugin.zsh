@@ -3,7 +3,13 @@ GITHUB="https://github.com"
 [[ -z "$RBENV_HOME" ]] && export RBENV_HOME="$HOME/.rbenv"
 
 # export PATH
-export PATH="$RBENV_HOME/bin:$PATH"
+if [[ ! :$PATH: =~ :$RBENV_HOME/bin: ]]; then
+	export PATH="$RBENV_HOME/bin:$PATH"
+fi
+
+if [[ ! :$PATH: =~ :${RBENV_ROOT:-$RBENV_HOME}/shims: ]]; then
+	export PATH="${RBENV_ROOT:-$RBENV_HOME}/shims:$PATH"
+fi
 
 _zsh_rbenv_install() {
     echo "Installing rbenv..."
@@ -13,7 +19,7 @@ _zsh_rbenv_install() {
 }
 
 _zsh_rbenv_load() {
-    eval "$(rbenv init - --no-rehash zsh)"
+    eval "$(rbenv init - --no-rehash zsh | sed '/export PATH=/d')"
 }
 
 # install rbenv if it isnt already installed
